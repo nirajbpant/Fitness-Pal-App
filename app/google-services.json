@@ -8,12 +8,20 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:361274554449:android:21cae30d4be28c184e2070",
+        "mobilesdk_app_id": "1:361274554449:android:a2ad569d917c4e024e2070",
         "android_client_info": {
-          "package_name": "com.example.fitnesspal"
+          "package_name": "com.niraj.fitnesspal"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "361274554449-8f50addg0rdi50htkl6dnjbibii87u1i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.niraj.fitnesspal",
+            "certificate_hash": "d697ae4df4089ceb41d2ccb3cf121ec9062c24b7"
+          }
+        },
         {
           "client_id": "361274554449-pibfguqqecui0uqj63gvbmlth3ibmmum.apps.googleusercontent.com",
           "client_type": 3

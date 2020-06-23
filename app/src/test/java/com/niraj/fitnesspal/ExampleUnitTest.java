@@ -1,4 +1,4 @@
-package com.example.fitnesspal;
+package com.niraj.fitnesspal;
 
 import org.junit.Test;
 
