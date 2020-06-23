@@ -4,8 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,13 +21,14 @@ import static com.niraj.fitnesspal.data.Constant.TABLE_FOOD;
 import static com.niraj.fitnesspal.data.DatabaseNames.DELETED_FLAG;
 
 public class FoodRepository {
+    private static final String TAG = FoodRepository.class.getSimpleName();
 
     private static FoodRepository instance;
     private final FirebaseDatabase firebaseInstance = FirebaseDatabase.getInstance();
-    private MutableLiveData<ActionWrapper<FoodEntry>> foods = new MutableLiveData<>();
     private DatabaseCompletionListener databaseCompletionListener;
 
     private FoodRepository(Context context) {
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         databaseCompletionListener = new DatabaseCompletionListener(context);
     }
 
@@ -45,24 +44,24 @@ public class FoodRepository {
         return firebaseInstance.getReference(TABLE_FOOD + "/" + userId);
     }
 
-    public LiveData<ActionWrapper<FoodEntry>> getItems() {
+    public void getItems(Result.OnResultData<ActionWrapper<FoodEntry>> onResult) {
         getFoodDatabaseRef()
                 .orderByChild(DELETED_FLAG)
                 .equalTo(false)
                 .addChildEventListener(new FirebaseChildListener<FoodEntry>() {
                     @Override
                     public void onChildChanged(FoodEntry snapShot) {
-                        foods.postValue(new ActionWrapper<>(snapShot, ActionWrapper.Action.ADDED));
+                        onResult.onResult(Result.success(new ActionWrapper<>(snapShot, ActionWrapper.Action.UPDATED)));
                     }
 
                     @Override
                     public void onChildAdded(FoodEntry snapShot) {
-                        foods.postValue(new ActionWrapper<>(snapShot, ActionWrapper.Action.UPDATED));
+                        onResult.onResult(Result.success(new ActionWrapper<>(snapShot, ActionWrapper.Action.ADDED)));
                     }
 
                     @Override
                     public void onChildRemoved(FoodEntry snapShot) {
-                        foods.postValue(new ActionWrapper<>(snapShot, ActionWrapper.Action.REMOVED));
+                        onResult.onResult(Result.success(new ActionWrapper<>(snapShot, ActionWrapper.Action.REMOVED)));
                     }
 
                     @Override
@@ -70,7 +69,6 @@ public class FoodRepository {
 
                     }
                 });
-        return foods;
     }
 
     public void createOrUpdateItem(final FoodEntry food, Result.OnResult onResult) {

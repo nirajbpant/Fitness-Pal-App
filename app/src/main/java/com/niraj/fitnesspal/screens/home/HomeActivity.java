@@ -25,6 +25,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.niraj.fitnesspal.R;
 import com.niraj.fitnesspal.screens.base.BaseActivity;
+import com.niraj.fitnesspal.screens.foodlist.FoodListActivity;
 import com.niraj.fitnesspal.screens.helper.Classifier;
 import com.niraj.fitnesspal.screens.helper.PhotoPickHelper;
 import com.niraj.fitnesspal.screens.loginandregister.LoginActivity;
@@ -132,8 +133,14 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.actionLogout) {
             logoutUser();
+        } else if (item.getItemId() == R.id.actionList) {
+            navigateToFoodList();
         }
         return true;
+    }
+
+    private void navigateToFoodList() {
+        startActivity(new Intent(this, FoodListActivity.class));
     }
 
     private void logoutUser() {

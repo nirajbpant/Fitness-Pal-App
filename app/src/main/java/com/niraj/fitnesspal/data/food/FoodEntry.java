@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.niraj.fitnesspal.data.Constant.DATE_FORMAT;
 
@@ -59,6 +60,38 @@ public class FoodEntry implements BaseModel {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public float getCalories() {
+        return calories;
+    }
+
+    public float getCarbs() {
+        return carbs;
+    }
+
+    public float getProtein() {
+        return protein;
+    }
+
+    public float getFat() {
+        return fat;
+    }
+
+    public Date getAddedDate() {
+        return addedDate;
+    }
+
+    public int getNoOfItems() {
+        return noOfItems;
+    }
+
     @Override
     public void setId(String id) {
         this.id = id;
@@ -76,5 +109,34 @@ public class FoodEntry implements BaseModel {
         result.put(DatabaseNames.FIELD_NO_OF_ITEMS, noOfItems);
         result.put(DatabaseNames.DELETED_FLAG, isDeleted);
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FoodEntry foodEntry = (FoodEntry) o;
+        return id.equals(foodEntry.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "FoodEntry{" +
+                "id='" + id + '\'' +
+                ", isDeleted=" + isDeleted +
+                ", name='" + name + '\'' +
+                ", unit='" + unit + '\'' +
+                ", calories=" + calories +
+                ", carbs=" + carbs +
+                ", protein=" + protein +
+                ", fat=" + fat +
+                ", addedDate=" + addedDate +
+                ", noOfItems=" + noOfItems +
+                '}';
     }
 }

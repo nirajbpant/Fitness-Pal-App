@@ -17,4 +17,9 @@
     <string name="take_photo">Take photo</string>
     <string name="add_text">Add</string>
     <string name="loading_text">Loading</string>
+    <string name="food_item_detail_list">
+        Calorie: %1$.2f\nCarb: %2$.2f\nProtein: %3$.2f\nFat: %4$.2f
+    </string>
+    <string name="foods_format">Foods (Total Calories: %1$.2f)</string>
+    <string name="x_format">x%1$d</string>
 </resources>

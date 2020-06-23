@@ -23,5 +23,13 @@ public class ActionWrapper<T> {
     public enum Action {
         ADDED, UPDATED, REMOVED
     }
+
+    @Override
+    public String toString() {
+        return "ActionWrapper{" +
+                "data=" + data +
+                ", mAction=" + mAction +
+                '}';
+    }
 }
 
