@@ -6,9 +6,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.niraj.fitnesspal.data.User;
 import com.niraj.fitnesspal.utils.Result;
 
+import static com.niraj.fitnesspal.data.Constant.TABLE_USER_DATA;
+
 public class SessionRepository {
     private static SessionRepository instance = null;
-    private final String USERS_DATABASE = "Users";
 
     private FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
 
@@ -51,8 +52,8 @@ public class SessionRepository {
                 onResult.onResult(Result.error("SignUp Unsuccessful"));
             } else {
                 User user = new User(firstName, lastName, email);
-                FirebaseDatabase.getInstance().getReference(USERS_DATABASE)
-                        .child(mFirebaseAuth.getCurrentUser().getUid())
+                FirebaseDatabase.getInstance().getReference(TABLE_USER_DATA)
+                        .child(getUserId())
                         .setValue(user).addOnCompleteListener(createUserTask -> {
                     if (createUserTask.isSuccessful()) {
                         onResult.onResult(Result.success());
@@ -62,5 +63,9 @@ public class SessionRepository {
                 });
             }
         });
+    }
+
+    public String getUserId() {
+        return mFirebaseAuth.getCurrentUser().getUid();
     }
 }

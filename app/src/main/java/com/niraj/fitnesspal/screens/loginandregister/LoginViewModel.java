@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel;
 import com.niraj.fitnesspal.data.session.SessionRepository;
 import com.niraj.fitnesspal.utils.Result;
 
-class LoginViewModel extends ViewModel {
+public class LoginViewModel extends ViewModel {
     private SessionRepository sessionRepository = SessionRepository.getInstance();
 
     void loginUser(String email, String password, Result.OnResult onResult) {

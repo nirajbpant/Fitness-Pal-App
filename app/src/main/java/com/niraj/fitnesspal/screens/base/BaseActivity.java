@@ -10,11 +10,16 @@ public abstract class BaseActivity extends AppCompatActivity {
     private LoadingUiHelper.ProgressDialogFragment progressDialogFragment;
 
     protected void showLoading() {
-        progressDialogFragment = LoadingUiHelper.getInstance().showProgress(getSupportFragmentManager(), LoadingUiHelper.Type.FULL_SCREEN);
+        if (progressDialogFragment == null) {
+            progressDialogFragment = LoadingUiHelper.getInstance().showProgress(getSupportFragmentManager(), LoadingUiHelper.Type.FULL_SCREEN);
+        }
     }
 
     protected void hideLoading() {
-        progressDialogFragment.dismiss();
+        if (progressDialogFragment != null) {
+            progressDialogFragment.dismissAllowingStateLoss();
+            progressDialogFragment = null;
+        }
     }
 
     protected void showToast(String s) {

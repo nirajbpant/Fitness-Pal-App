@@ -201,6 +201,17 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
     }
 
     private void onItemAdded(Classifier.FoodItem foodItem) {
-        // todo save to database
+        showLoading();
+        viewModel.addFoodItem(foodItem, 1, result -> {
+            hideLoading();
+            switch (result.getStatus()) {
+                case SUCCESS:
+                    showToast("Item Added");
+                    break;
+                case ERROR:
+                    showToast(result.getMessage());
+                    break;
+            }
+        });
     }
 }

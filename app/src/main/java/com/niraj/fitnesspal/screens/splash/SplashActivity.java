@@ -13,7 +13,6 @@ import com.niraj.fitnesspal.screens.loginandregister.LoginActivity;
 public class SplashActivity extends BaseActivity {
     private SplashViewModel viewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
