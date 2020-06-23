@@ -14,11 +14,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.Group;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.niraj.fitnesspal.R;
@@ -37,10 +39,12 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
     private static final String mLabelPath = "labels_food.txt";
     private static String TAG = "HomeActivity";
     private Toolbar toolbar;
+    private NumberPicker itemCount;
+    private Group addLayout;
     private ImageView preview, createIcon;
     private TextView foodName, foodStatus;
-    private ImageButton clearIcon, addIcon;
-    private Button scanBtn;
+    private ImageButton clearIcon;
+    private Button addBtn;
     private View foodStatusLayout;
     private Classifier classifier;
 
@@ -55,11 +59,12 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
 
         setContentView(R.layout.activity_home);
         toolbar = findViewById(R.id.homeToolbar);
-        scanBtn = findViewById(R.id.scanBtn);
+        addBtn = findViewById(R.id.addBtn);
         preview = findViewById(R.id.preview);
+        addLayout = findViewById(R.id.addLayout);
+        itemCount = findViewById(R.id.itemCount);
         createIcon = findViewById(R.id.createIcon);
         clearIcon = findViewById(R.id.clearIcon);
-        addIcon = findViewById(R.id.addIcon);
         foodName = findViewById(R.id.foodName);
         foodStatus = findViewById(R.id.foodStatus);
         foodStatusLayout = findViewById(R.id.foodStatusLayout);
@@ -68,11 +73,13 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
 
         initClassifier();
 
+        itemCount.setMinValue(1);
+        itemCount.setMaxValue(100);
+
         createIcon.setOnClickListener(v -> showImageSelection());
         clearIcon.setOnClickListener(v -> removeImage());
         photoPickHelper.addPhotoPickCallback(this);
         photoPickHelper.setActivity(this);
-        scanBtn.setOnClickListener(v -> predict());
     }
 
     private void initClassifier() {
@@ -87,12 +94,12 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
     }
 
     private void removeImage() {
-        scanBtn.setEnabled(false);
         createIcon.setVisibility(View.VISIBLE);
         foodStatusLayout.setVisibility(View.GONE);
 
         clearIcon.setVisibility(View.GONE);
         preview.setVisibility(View.GONE);
+        addLayout.setVisibility(View.GONE);
     }
 
     private void showImageSelection() {
@@ -158,7 +165,6 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
 
     @Override
     public void setUpImage(String currentPhotoPath) {
-        scanBtn.setEnabled(true);
 
         createIcon.setVisibility(View.GONE);
         foodStatusLayout.setVisibility(View.GONE);
@@ -167,11 +173,10 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
         preview.setVisibility(View.VISIBLE);
 
         preview.setImageURI(Uri.fromFile(new File(currentPhotoPath)));
+        predict();
     }
 
     private void predict() {
-        scanBtn.setEnabled(false);
-        scanBtn.setText(R.string.loading_text);
         Bitmap bitmap = ((BitmapDrawable) preview.getDrawable()).getBitmap();
         showLoading();
         AsyncTask.execute(() -> {
@@ -179,15 +184,15 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
                 List<Classifier.Recognition> result = classifier.recognizeImage(bitmap);
                 runOnUiThread(() -> {
                             hideLoading();
-                            scanBtn.setEnabled(true);
-                            scanBtn.setText(R.string.predict_text);
                             if (result.size() > 0) {
+                                addLayout.setVisibility(View.VISIBLE);
                                 foodStatusLayout.setVisibility(View.VISIBLE);
                                 Classifier.FoodItem foodItem = result.get(0).getFoodItem();
                                 foodName.setText(String.format(getString(R.string.food_name_format), foodItem.getTitle(), foodItem.getItemUnit()));
                                 foodStatus.setText(String.format(getString(R.string.food_status_format), foodItem.getCalories(), foodItem.getCarb(), foodItem.getProtein(), foodItem.getFat()));
-                                addIcon.setOnClickListener(v -> onItemAdded(foodItem));
+                                addBtn.setOnClickListener(v -> onItemAdded(foodItem));
                             } else {
+                                addLayout.setVisibility(View.GONE);
                                 foodStatusLayout.setVisibility(View.GONE);
                                 showToast("No item found");
                             }
@@ -202,11 +207,12 @@ public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoP
 
     private void onItemAdded(Classifier.FoodItem foodItem) {
         showLoading();
-        viewModel.addFoodItem(foodItem, 1, result -> {
+        viewModel.addFoodItem(foodItem, itemCount.getValue(), result -> {
             hideLoading();
             switch (result.getStatus()) {
                 case SUCCESS:
                     showToast("Item Added");
+                    removeImage();
                     break;
                 case ERROR:
                     showToast(result.getMessage());

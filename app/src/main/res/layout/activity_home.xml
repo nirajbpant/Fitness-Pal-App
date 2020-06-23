@@ -102,7 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/horizontal_margin"
                             android:text="@string/food_name_format"
-                            app:layout_constraintEnd_toStartOf="@+id/addIcon"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -114,47 +114,57 @@
                             android:layout_marginEnd="@dimen/horizontal_margin"
                             android:text="@string/food_status_format"
                             app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/addIcon"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/foodName" />
 
-                        <ImageButton
-                            android:id="@+id/addIcon"
-                            android:layout_width="32dp"
-                            android:layout_height="32dp"
-                            android:layout_margin="@dimen/vertical_margin"
-                            android:background="@drawable/background_create_pass"
-                            android:foreground="?selectableItemBackground"
-                            android:src="@drawable/ic_plus_dark"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/addLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                app:constraint_referenced_ids="itemCount,addBtn"
+                tools:visibility="visible" />
+
+            <NumberPicker
+                android:id="@+id/itemCount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/horizontal_margin_large"
+                android:layout_marginEnd="@dimen/horizontal_margin_large"
+                android:background="@android:color/transparent"
+                android:descendantFocusability="blocksDescendants"
+                app:layout_constraintBottom_toTopOf="@id/footer"
+                app:layout_constraintEnd_toStartOf="@id/addBtn"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cardView" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/addBtn"
+                style="@style/Navigation.Button.Dark"
+                android:layout_width="0dp"
+                android:layout_marginStart="@dimen/horizontal_margin_large"
+                android:layout_marginEnd="@dimen/horizontal_margin_large"
+                android:text="@string/add_text"
+                app:layout_constraintBottom_toBottomOf="@id/itemCount"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/itemCount"
+                app:layout_constraintTop_toTopOf="@id/itemCount" />
+
             <TextView
                 android:id="@+id/footer"
                 style="@style/Widget.Footer.Text"
-                android:layout_marginBottom="@dimen/vertical_margin"
                 android:text="@string/home_footer_text"
-                app:layout_constraintBottom_toTopOf="@id/scanBtn"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/scanBtn"
-                style="@style/Navigation.Button.Dark"
-                android:layout_marginStart="@dimen/horizontal_margin_large"
-                android:layout_marginEnd="@dimen/horizontal_margin_large"
-                android:layout_marginBottom="@dimen/vertical_margin_large"
-                android:enabled="false"
-                android:text="@string/predict_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

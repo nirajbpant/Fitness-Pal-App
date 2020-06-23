@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.niraj.fitnesspal.R;
 
@@ -35,8 +36,9 @@ public class LoadingUiHelper {
         Bundle bundle = new Bundle();
         bundle.putSerializable(KEY_TYPE, type);
         progressDialogFragment.setArguments(bundle);
-        progressDialogFragment.show(fragmentManager, TAG);
-
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.add(progressDialogFragment, TAG);
+        ft.commitAllowingStateLoss();
         return progressDialogFragment;
     }
 
