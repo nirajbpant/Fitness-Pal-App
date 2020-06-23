@@ -1,6 +1,7 @@
 package com.niraj.fitnesspal.screens.foodlist;
 
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,7 +14,6 @@ import com.niraj.fitnesspal.R;
 import com.niraj.fitnesspal.data.food.FoodEntry;
 import com.niraj.fitnesspal.data.helpers.ActionWrapper;
 import com.niraj.fitnesspal.screens.foodlist.adapter.FoodAdapter;
-import com.niraj.fitnesspal.utils.Result;
 
 public class FoodListActivity extends AppCompatActivity {
     private static final String TAG = FoodListActivity.class.getSimpleName();
@@ -50,7 +50,9 @@ public class FoodListActivity extends AppCompatActivity {
             }
             float itemCount = 0f;
             for (FoodEntry entry : mAdapter.getItems()) {
-                itemCount += (entry.getCalories() * entry.getNoOfItems());
+                if (DateUtils.isToday(entry.getAddedDate().getTime())) {
+                    itemCount += (entry.getCalories() * entry.getNoOfItems());
+                }
             }
             setCalorieCount(itemCount);
         });
