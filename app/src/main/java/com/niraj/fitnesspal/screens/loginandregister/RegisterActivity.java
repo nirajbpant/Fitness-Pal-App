@@ -50,63 +50,55 @@ public class RegisterActivity extends AppCompatActivity {
         tvSignIn = findViewById(R.id.tvSignIn);
         btnSignup = findViewById(R.id.registerBtn);
 
-        btnSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final String firstName = editFirstName.getText().toString();
-                final String lastName = editLastName.getText().toString();
-                final String email = editEmail.getText().toString();
-                final String pass = editPassword.getText().toString();
-                if (firstName.isEmpty()) {
-                    editFirstNameLayout.setError("Please provide firstName");
-                    editFirstName.requestFocus();
-                } else if (lastName.isEmpty()) {
-                    editLastNameLayout.setError("Please provide lastName");
-                    editLastName.requestFocus();
-                } else if (email.isEmpty()) {
-                    editEmailLayout.setError("Please enter email");
-                    editEmail.requestFocus();
-                } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    editEmailLayout.setError("Invalid Email Address");
-                    editEmail.requestFocus();
-                } else if (pass.isEmpty()) {
-                    editPasswordLayout.setError("Please enter password");
-                    editPassword.requestFocus();
-                } else {
-                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                Log.e(TAG, task.getException().getMessage(), task.getException());
-                                Toast.makeText(RegisterActivity.this, "SignUp Unsuccessful", Toast.LENGTH_SHORT).show();
-                            } else {
-                                User user = new User(firstName, lastName, email);
-                                FirebaseDatabase.getInstance().getReference("Users")
-                                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                        .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
-                                            finishAffinity();
-                                        } else {
-                                            Toast.makeText(RegisterActivity.this, "SignUp Unsuccessful", Toast.LENGTH_SHORT).show();
-                                        }
+        btnSignup.setOnClickListener(view -> {
+            final String firstName = editFirstName.getText().toString();
+            final String lastName = editLastName.getText().toString();
+            final String email = editEmail.getText().toString();
+            final String pass = editPassword.getText().toString();
+            if (firstName.isEmpty()) {
+                editFirstNameLayout.setError("Please provide firstName");
+                editFirstName.requestFocus();
+            } else if (lastName.isEmpty()) {
+                editLastNameLayout.setError("Please provide lastName");
+                editLastName.requestFocus();
+            } else if (email.isEmpty()) {
+                editEmailLayout.setError("Please enter email");
+                editEmail.requestFocus();
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editEmailLayout.setError("Invalid Email Address");
+                editEmail.requestFocus();
+            } else if (pass.isEmpty()) {
+                editPasswordLayout.setError("Please enter password");
+                editPassword.requestFocus();
+            } else {
+                mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.e(TAG, task.getException().getMessage(), task.getException());
+                            Toast.makeText(RegisterActivity.this, "SignUp Unsuccessful", Toast.LENGTH_SHORT).show();
+                        } else {
+                            User user = new User(firstName, lastName, email);
+                            FirebaseDatabase.getInstance().getReference("Users")
+                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        startActivity(new Intent(RegisterActivity.this, HomeActivity.class));
+                                        finishAffinity();
+                                    } else {
+                                        Toast.makeText(RegisterActivity.this, "SignUp Unsuccessful", Toast.LENGTH_SHORT).show();
                                     }
-                                });
+                                }
+                            });
 
-                            }
                         }
-                    });
-                }
+                    }
+                });
             }
         });
 
-        tvSignIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
+        tvSignIn.setOnClickListener(view -> finish());
     }
 }

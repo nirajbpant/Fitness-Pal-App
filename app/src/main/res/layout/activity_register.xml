@@ -3,15 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="32dp"
-    android:paddingEnd="32dp">
+    android:paddingStart="@dimen/horizontal_margin_large"
+    android:paddingEnd="@dimen/horizontal_margin_large">
 
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/editFirstNameLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="First Name"
+        android:hint="@string/first_name_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:hint="Last Name"
+        android:hint="@string/last_name_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editFirstNameLayout">
@@ -49,7 +49,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:hint="Email"
+        android:hint="@string/email_address_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editLastNameLayout">
@@ -67,7 +67,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:hint="Password"
+        android:hint="@string/password_text"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -85,7 +85,7 @@
     <Button
         android:id="@+id/registerBtn"
         style="@style/Navigation.Button.Dark"
-        android:text="Register"
+        android:text="@string/register_text"
         app:layout_constraintBottom_toTopOf="@+id/tvSignIn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -93,10 +93,11 @@
 
     <TextView
         android:id="@+id/tvSignInLabel"
+        style="@style/Widget.Footer.Text.Simple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
-        android:text="Already a member?"
+        android:text="@string/already_a_member_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tvSignIn"
         app:layout_constraintHorizontal_chainStyle="packed"
@@ -104,10 +105,11 @@
 
     <TextView
         android:id="@+id/tvSignIn"
+        style="@style/Widget.Footer.Text.Simple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="4dp"
-        android:text="Sign In."
+        android:text="@string/sign_in_text"
         android:textColor="?colorAccent"
         app:layout_constraintBaseline_toBaselineOf="@id/tvSignInLabel"
         app:layout_constraintEnd_toEndOf="parent"

@@ -41,53 +41,44 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.loginBtn);
         tvSignup = findViewById(R.id.tvSignup);
 
-        mAuthStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
-                if (mFirebaseUser != null) {
-                    Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(i);
-                } else {
-                    Toast.makeText(LoginActivity.this, "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
-                }
+        mAuthStateListener = firebaseAuth -> {
+            FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
+            if (mFirebaseUser != null) {
+                Toast.makeText(LoginActivity.this, "You are logged in", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                startActivity(i);
+            } else {
+                Toast.makeText(LoginActivity.this, "Invalid Login Credentials", Toast.LENGTH_SHORT).show();
             }
         };
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = editEmail.getText().toString();
-                String pass = editPassword.getText().toString();
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    editEmailLayout.setError("Please enter email");
-                    editEmail.requestFocus();
-                } else if (pass.isEmpty()) {
-                    editPasswordLayout.setError("Please enter password");
-                    editPassword.requestFocus();
-                } else {
-                    mFirebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                Toast.makeText(LoginActivity.this, "Login error", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Intent intentToHome = new Intent(LoginActivity.this, HomeActivity.class);
-                                startActivity(intentToHome);
-                            }
+        loginBtn.setOnClickListener(view -> {
+            String email = editEmail.getText().toString();
+            String pass = editPassword.getText().toString();
+            if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                editEmailLayout.setError("Please enter email");
+                editEmail.requestFocus();
+            } else if (pass.isEmpty()) {
+                editPasswordLayout.setError("Please enter password");
+                editPassword.requestFocus();
+            } else {
+                mFirebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(LoginActivity.this, "Login error", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Intent intentToHome = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intentToHome);
                         }
-                    });
-                }
+                    }
+                });
             }
         });
 
-        tvSignup.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intToSignup = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intToSignup);
-            }
+        tvSignup.setOnClickListener(view -> {
+            Intent intToSignup = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intToSignup);
         });
     }
 
