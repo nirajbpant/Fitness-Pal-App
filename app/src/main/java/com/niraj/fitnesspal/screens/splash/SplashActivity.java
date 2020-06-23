@@ -3,26 +3,35 @@ package com.niraj.fitnesspal.screens.splash;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.niraj.fitnesspal.R;
-import com.niraj.fitnesspal.screens.HomeActivity;
+import com.niraj.fitnesspal.screens.base.BaseActivity;
+import com.niraj.fitnesspal.screens.home.HomeActivity;
 import com.niraj.fitnesspal.screens.loginandregister.LoginActivity;
 
-public class SplashActivity extends AppCompatActivity {
+public class SplashActivity extends BaseActivity {
+    private SplashViewModel viewModel;
 
-    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (mFirebaseAuth.getCurrentUser() == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-        } else {
-            startActivity(new Intent(this, HomeActivity.class));
-        }
-        finishAffinity();
+
+        viewModel = new ViewModelProvider(this).get(SplashViewModel.class);
+        showLoading();
+        viewModel.isLoggedIn(result -> {
+            hideLoading();
+            switch (result.getStatus()) {
+                case SUCCESS:
+                    startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+                    break;
+                case ERROR:
+                    startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                    break;
+            }
+            finishAffinity();
+        });
     }
 }

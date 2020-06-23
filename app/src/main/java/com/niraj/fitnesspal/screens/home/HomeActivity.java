@@ -1,4 +1,4 @@
-package com.niraj.fitnesspal.screens;
+package com.niraj.fitnesspal.screens.home;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,14 +16,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.niraj.fitnesspal.R;
+import com.niraj.fitnesspal.screens.base.BaseActivity;
 import com.niraj.fitnesspal.screens.helper.Classifier;
 import com.niraj.fitnesspal.screens.helper.PhotoPickHelper;
 import com.niraj.fitnesspal.screens.loginandregister.LoginActivity;
@@ -32,16 +31,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements PhotoPickHelper.PhotoPickCallback {
-    private static String TAG = "HomeActivity";
-
+public class HomeActivity extends BaseActivity implements PhotoPickHelper.PhotoPickCallback {
     private static final int mInputSize = 256;
     private static final String mModelPath = "model.tflite";
     private static final String mLabelPath = "labels_food.txt";
-
-
-    FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-
+    private static String TAG = "HomeActivity";
     private Toolbar toolbar;
     private ImageView preview, createIcon;
     private TextView foodName, foodStatus;
@@ -51,10 +45,14 @@ public class HomeActivity extends AppCompatActivity implements PhotoPickHelper.P
     private Classifier classifier;
 
     private PhotoPickHelper photoPickHelper = new PhotoPickHelper(this);
+    private HomeViewModel viewModel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        viewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
         setContentView(R.layout.activity_home);
         toolbar = findViewById(R.id.homeToolbar);
         scanBtn = findViewById(R.id.scanBtn);
@@ -126,12 +124,26 @@ public class HomeActivity extends AppCompatActivity implements PhotoPickHelper.P
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == R.id.actionLogout) {
-            mFirebaseAuth.signOut();
-            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finishAffinity();
+            logoutUser();
         }
         return true;
+    }
+
+    private void logoutUser() {
+        showLoading();
+        viewModel.logoutUser(result -> {
+            hideLoading();
+            switch (result.getStatus()) {
+                case SUCCESS:
+                    Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finishAffinity();
+                    break;
+                case ERROR:
+                    showToast("Something went wrong");
+                    break;
+            }
+        });
     }
 
     @Override
@@ -161,10 +173,12 @@ public class HomeActivity extends AppCompatActivity implements PhotoPickHelper.P
         scanBtn.setEnabled(false);
         scanBtn.setText(R.string.loading_text);
         Bitmap bitmap = ((BitmapDrawable) preview.getDrawable()).getBitmap();
+        showLoading();
         AsyncTask.execute(() -> {
             if (classifier != null) {
                 List<Classifier.Recognition> result = classifier.recognizeImage(bitmap);
                 runOnUiThread(() -> {
+                            hideLoading();
                             scanBtn.setEnabled(true);
                             scanBtn.setText(R.string.predict_text);
                             if (result.size() > 0) {
@@ -175,7 +189,7 @@ public class HomeActivity extends AppCompatActivity implements PhotoPickHelper.P
                                 addIcon.setOnClickListener(v -> onItemAdded(foodItem));
                             } else {
                                 foodStatusLayout.setVisibility(View.GONE);
-                                Toast.makeText(HomeActivity.this, "No item found", Toast.LENGTH_SHORT).show();
+                                showToast("No item found");
                             }
                         }
                 );

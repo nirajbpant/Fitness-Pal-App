@@ -22,7 +22,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
         <activity
-            android:name=".screens.HomeActivity"
+            android:name=".screens.home.HomeActivity"
             android:label="" />
         <activity android:name=".screens.loginandregister.RegisterActivity" />
         <activity android:name=".screens.loginandregister.LoginActivity" />
