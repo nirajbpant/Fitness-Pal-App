@@ -102,6 +102,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/horizontal_margin"
                             android:text="@string/food_name_format"
+                            app:layout_constraintEnd_toStartOf="@+id/addIcon"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -113,8 +114,22 @@
                             android:layout_marginEnd="@dimen/horizontal_margin"
                             android:text="@string/food_status_format"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/addIcon"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/foodName" />
+
+                        <ImageButton
+                            android:id="@+id/addIcon"
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:layout_margin="@dimen/vertical_margin"
+                            android:background="@drawable/background_create_pass"
+                            android:foreground="?selectableItemBackground"
+                            android:src="@drawable/ic_plus_dark"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>

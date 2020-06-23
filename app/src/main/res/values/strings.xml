@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Fitness Pal</string>
-    <string name="food_name_format">Food Name: %1$s</string>
-    <string name="food_status_format">Food Calorie: %1$s</string>
+    <string name="food_name_format">Name: %1$s (%2$s)</string>
+    <string name="food_status_format">Calorie: %1$.2f Carb: %2$.2f\nProtein: %3$.2f Fat: %4$.2f</string>
     <string name="home_footer_text">Tap the plus icon to take a photo of the food you want to scan. Then click next make the prediction.</string>
     <string name="email_address_text">Email Address</string>
     <string name="password_text">Password</string>
@@ -16,4 +16,5 @@
     <string name="select_image_from_album">Select image from album</string>
     <string name="take_photo">Take photo</string>
     <string name="predict_text">Predict</string>
+    <string name="loading_text">Loading</string>
 </resources>

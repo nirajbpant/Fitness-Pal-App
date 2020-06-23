@@ -1,0 +1,20 @@
+Chicken Curry
+Chicken Wings
+Chocolate Cake
+Cup Cake
+Donuts
+Mo:Mo
+Fries
+Fried Rice
+Garlic Bread
+Hamburger
+Hotdog
+Ice-Cream
+Omelette
+Pizza
+Samosa,Per Piece,45.0,20.0,2.0,2.0
+Sandwich
+Soup
+Spring rolls
+Sushi
+Waffle

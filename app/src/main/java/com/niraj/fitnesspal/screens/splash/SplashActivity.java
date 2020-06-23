@@ -20,8 +20,9 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         if (mFirebaseAuth.getCurrentUser() == null) {
             startActivity(new Intent(this, LoginActivity.class));
-        }else {
+        } else {
             startActivity(new Intent(this, HomeActivity.class));
         }
+        finishAffinity();
     }
 }
