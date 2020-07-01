@@ -131,4 +131,8 @@ While deep neural networks are all the rage, the complexity of the major framewo
 
 Keras is one of the leading high-level neural networks APIs. It is written in Python and supports multiple back-end neural network computation engines.
 
+---
+## Documentation (Firebase and Firebase Auth)
+Firebase is Google’s mobile application development platform that helps you build, improve, and grow your app. Firebase Authentication provides backend services, easy-to-use SDKs, and ready-made UI libraries to authenticate users to your app. It supports authentication using passwords, phone numbers, popular federated identity providers like Google, Facebook and Twitter, and more.
+
 
