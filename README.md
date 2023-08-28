@@ -1,16 +1,16 @@
 # Fitness-Pal-App
 ## About the Installation of the FintessPal App
-#### *** 1 Register and Sign Up:***
+#### 1 Register and Sign Up:
 Fill in the Information that is required in Register and Sign Up.
-#### *** 2 Login:***
+#### 2 Login:
 After Filling up the register form and signing Up, Login with the same credentials.
-#### *** 3 Tracking a Food:***
+#### 3 Tracking a Food:
 After Logging in, you'll be given an option to either take a photo of the food or choose from gallery to track the food.
-#### *** 4 Adding a Tracked Food into Journal:***
+#### 4 Adding a Tracked Food into Journal:
 After tracking a food, you'll be given an option to add the tracked food into journal with quantity respectively.
-#### *** 5 Checking the food Journal:***
+#### 5 Checking the food Journal:
 After adding foods to the journal, an option in the top right corner of the screen will show the tracked and added foods with its calorie and the day's total calorie respectively.
-#### ***6 Logout Button***.
+#### 6 Logout Button.
 You can logout using the Logout button which will save all your calories in your account only.
 
 ---
